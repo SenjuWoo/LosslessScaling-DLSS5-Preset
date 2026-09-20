@@ -19,9 +19,14 @@ Expected contents:
 | `nvngx_dlssnr.dll` | 310.8.SF.0 | 158 MB |
 | `sl.*.dll` (11 files) | 2.14.1.0 | 5.5 MB |
 
-The release archive `nvngx-dlss5-runtime.zip` is **170 MB** and its SHA256 is published in the
-release notes and in [`SHA256SUMS.txt`](../../SHA256SUMS.txt) at the repo root. `INSTALL.bat` prints
-the hash of what it downloaded so you can compare before anything is copied into your LS folder.
+The release archive `nvngx-dlss5-runtime.zip` is **170 MB** (178898810 bytes) and its SHA256 is:
+
+```
+dcf553c198ff1e27755be6997eba2c3fd912f96a7e38913f38e198bdf607c8b7
+```
+
+It is also in the release notes. `INSTALL.bat` prints the hash of what it downloaded, so you can
+compare before anything is copied into your LS folder.
 
 `nvngx_dlssnr.dll` is the neural-rendering runtime: the `SF` build is the community
 patched one that works on RTX 20/30/40. RTX 50 cards can use NVIDIA's own build
