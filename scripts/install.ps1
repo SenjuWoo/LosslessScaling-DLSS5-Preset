@@ -13,6 +13,14 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+# Everything below is also written to a log, because the failure that matters most
+# ("cannot write to the folder") scrolls away in a console window.
+$LogDir = Join-Path $env:LOCALAPPDATA 'LosslessScaling-DLSS5-Preset'
+try {
+    if (-not (Test-Path -LiteralPath $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force | Out-Null }
+    Start-Transcript -Path (Join-Path $LogDir 'install.log') -Force | Out-Null
+} catch { }
+
 $RepoRoot   = Split-Path -Parent $PSScriptRoot
 $PayloadDir = Join-Path $RepoRoot 'payload'
 $NvngxDir   = Join-Path $PayloadDir 'nvngx'
@@ -238,6 +246,11 @@ if ($running) {
 if ($Verify) { exit (Test-Install -LsDir $lsDir) }
 
 if ($DryRun) { Write-Host ''; Warn 'DRY RUN - nothing will be written' }
+
+if (-not $DryRun -and -not (Test-Writable -Dir $lsDir)) {
+    Show-NotWritable -Dir $lsDir -ScriptName (Join-Path $PSScriptRoot 'install.ps1')
+    exit 1
+}
 
 $records = New-Object System.Collections.Generic.List[object]
 

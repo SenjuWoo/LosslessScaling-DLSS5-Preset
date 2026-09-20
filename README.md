@@ -53,7 +53,13 @@ the add-on needs to fire without the host having native DLSS.
 **1. Download the repo** — green **Code** button → *Download ZIP*, then extract it anywhere
 (`C:\Users\you\Downloads\LosslessScaling-DLSS5-Preset` is fine).
 
-**2. Double-click `INSTALL.bat`.** Approve the Windows prompt. That is the whole install.
+**2. Double-click `INSTALL.bat`.** That is the whole install.
+
+If your Steam library sits under `C:\Program Files`, Windows will not let a normal user write
+there — the installer detects that and tells you to right-click `INSTALL.bat` → **Run as
+administrator**. A library on another drive (the common case) needs no administrator rights at all.
+There is deliberately no automatic elevation: arguments cannot survive the Windows UAC hop, so a
+self-elevating script silently installs into the wrong folder. A clear instruction beats that.
 
 The installer finds your Lossless Scaling folder by itself, backs up what it replaces, copies the
 preset in, downloads the NVIDIA runtime archive (~275 MB, it prints the SHA256), writes the
@@ -191,6 +197,7 @@ aside and just not pressing `Ctrl+Alt+S`.
 | `ReShade.log` line 1 says *Reshade64.asi* | Something installed ReShade behind an ASI loader, which in LS only fires at exit. Reinstall ReShade as `dxgi.dll` over the LS folder |
 | LS crashes on start, or the LS *window* gets processed | LS was started without the launcher. Start it with `LAUNCH-LosslessScaling.bat` |
 | The installer says it cannot find Lossless Scaling | `INSTALL.bat -LsPath "X:\your\path\Lossless Scaling"` |
+| The installer says **Cannot write to …** | Your Steam library is under `C:\Program Files`. Right-click `INSTALL.bat` → **Run as administrator** |
 | PowerShell says *running scripts is disabled* | You ran a `.ps1` directly. Use the `.bat` files — they pass `-ExecutionPolicy Bypass` for you |
 | Low FPS | Lower **Scale**, then lower the output resolution in LS |
 | Everything looks frozen after stopping scaling | Known issue in the add-on's teardown — see [Limitations](#limitations). Scale once per session, keep the game in front, quit the game before closing LS |

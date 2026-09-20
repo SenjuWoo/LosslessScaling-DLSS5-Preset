@@ -10,6 +10,27 @@ function Join-NativePath {
     return ($Root.TrimEnd('\') + '\' + $Leaf.TrimStart('\'))
 }
 
+function Test-Writable {
+    param([string]$Dir)
+    $probe = Join-NativePath $Dir ('.lspreset-write-probe-' + [guid]::NewGuid().ToString('N') + '.tmp')
+    try {
+        [System.IO.File]::WriteAllText($probe, 'x')
+        Remove-Item -LiteralPath $probe -Force -ErrorAction SilentlyContinue
+        return $true
+    } catch { return $false }
+}
+
+function Show-NotWritable {
+    param([string]$Dir, [string]$ScriptName)
+    Write-Host ''
+    Write-Host ("Cannot write to " + $Dir) -ForegroundColor Red
+    Write-Host ''
+    Write-Host 'A Steam library under C:\Program Files needs administrator rights. Either:'
+    Write-Host '    right-click the .bat  ->  "Run as administrator"'
+    Write-Host '  or, from an already-elevated terminal:'
+    Write-Host ('    powershell -ExecutionPolicy Bypass -File "' + $ScriptName + '"')
+}
+
 function Get-SteamLibraries {
     $libs  = New-Object System.Collections.Generic.List[string]
     $roots = New-Object System.Collections.Generic.List[string]

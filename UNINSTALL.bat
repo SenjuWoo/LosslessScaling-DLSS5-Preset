@@ -3,28 +3,19 @@ setlocal
 title LosslessScaling-DLSS5-Preset - Uninstall
 cd /d "%~dp0"
 
-if not "%~1"=="" set "PRESET_ARGS=%*"
+REM Same reasoning as INSTALL.bat: no self-elevation, because arguments do not survive
+REM the UAC hop and a half-elevated uninstall is worse than none.
 
-net session >nul 2>&1
-if %errorlevel% neq 0 (
-  echo.
-  echo   Removing files from the Lossless Scaling folder needs administrator rights.
-  echo.
-  powershell -NoProfile -ExecutionPolicy Bypass -Command "Start-Process -FilePath '%~f0' -Verb RunAs"
-  if %errorlevel% neq 0 (
-    echo   Elevation was declined or failed. Right-click UNINSTALL.bat and pick "Run as administrator".
-    pause
-  )
-  exit /b
-)
-
-echo.
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\uninstall.ps1" %PRESET_ARGS%
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\uninstall.ps1" %*
 set "RC=%errorlevel%"
 
 if not "%RC%"=="0" (
   echo.
   echo   Uninstaller exited with code %RC%. Read the lines above.
+  echo.
+  echo   "Cannot write" means the folder needs administrator rights:
+  echo     right-click UNINSTALL.bat  ^>  "Run as administrator"
+  echo.
   pause
 )
 exit /b %RC%

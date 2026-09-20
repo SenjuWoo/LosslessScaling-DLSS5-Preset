@@ -38,6 +38,10 @@ if (Get-Process -Name 'LosslessScaling' -ErrorAction SilentlyContinue) {
     Write-Host 'Lossless Scaling is running. Close it and run this again.' -ForegroundColor Red
     exit 1
 }
+if (-not $DryRun -and -not (Test-Writable -Dir $lsDir)) {
+    Show-NotWritable -Dir $lsDir -ScriptName (Join-Path $PSScriptRoot 'uninstall.ps1')
+    exit 1
+}
 Say ("installed into " + $lsDir + " on " + $doc.installed)
 
 $removed = 0; $restored = 0; $missing = 0

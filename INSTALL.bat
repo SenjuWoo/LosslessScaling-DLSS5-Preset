@@ -3,31 +3,22 @@ setlocal
 title LosslessScaling-DLSS5-Preset - Install
 cd /d "%~dp0"
 
-if not "%~1"=="" set "PRESET_ARGS=%*"
+REM No elevation here on purpose. If your Steam library sits under C:\Program Files the
+REM installer says so and tells you to right-click this file -> "Run as administrator".
+REM Elevating from inside this script cannot pass arguments through the Windows UAC hop,
+REM so it would silently install into the wrong folder.
 
-REM Steam usually lives under Program Files, so the copy needs administrator rights.
-net session >nul 2>&1
-if %errorlevel% neq 0 (
-  echo.
-  echo   This needs administrator rights to write into the Lossless Scaling folder.
-  echo   Approve the Windows prompt. Nothing else on your PC is touched.
-  echo.
-  powershell -NoProfile -ExecutionPolicy Bypass -Command "Start-Process -FilePath '%~f0' -Verb RunAs"
-  if %errorlevel% neq 0 (
-    echo   Elevation was declined or failed. Right-click INSTALL.bat and pick "Run as administrator".
-    pause
-  )
-  exit /b
-)
-
-echo.
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\install.ps1" %PRESET_ARGS%
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\install.ps1" %*
 set "RC=%errorlevel%"
 
 if not "%RC%"=="0" (
   echo.
   echo   Installer exited with code %RC%. Read the lines above.
-  echo   Full log: %LOCALAPPDATA%\Temp\LosslessScaling-DLSS5-Preset_install.log
+  echo.
+  echo   "Cannot write" means the folder needs administrator rights:
+  echo     right-click INSTALL.bat  ^>  "Run as administrator"
+  echo.
+  echo   Full log: %LOCALAPPDATA%\LosslessScaling-DLSS5-Preset\install.log
   pause
 )
 exit /b %RC%
