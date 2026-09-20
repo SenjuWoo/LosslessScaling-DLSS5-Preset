@@ -3,6 +3,9 @@
 This repository is a **configuration preset plus an installer**. Almost none of the software in it
 was written here. Everything below belongs to its author and keeps its own licence.
 
+The MIT [LICENSE](LICENSE) at the root covers **only** the scripts, configuration files and
+documentation written for this repo. It does not cover any third-party binary.
+
 ## Bundled in `payload/`
 
 | File | Author / project | Licence | Source |
