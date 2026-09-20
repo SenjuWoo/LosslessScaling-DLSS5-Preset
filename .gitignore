@@ -1,0 +1,5 @@
+# Everything install.ps1 writes, plus the runtime cache it downloads.
+_backup/
+payload/nvngx/*.dll
+payload/nvngx/*.addon64
+*.log

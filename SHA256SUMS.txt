@@ -1,0 +1,12 @@
+# SHA256 of the payload shipped in git. Verify with:  sha256sum -c SHA256SUMS.txt
+#
+# The NVIDIA runtime DLLs are not in git - they ship as nvngx-dlss5-runtime.zip on the
+# releases page. That archive is 178898810 bytes and its hash is:
+#   dcf553c198ff1e27755be6997eba2c3fd912f96a7e38913f38e198bdf607c8b7  nvngx-dlss5-runtime.zip
+
+0cee63f9c9f13f3ac909c5b4903f4dbb4b719a7ab3b4f13b0deaf83c814b94f7 *payload/dxgi.dll
+d3184429254f09d2f8a50b7f3d10b9b24cc3b630b35aeb81f8cb43beb9e50afc *payload/renodx-dlss.addon64
+3230bdaa5ecb107fe8c377fbae5b26ee1a62a9a2478230afb109c71fdd517382 *payload/ReShade.ini
+f98468ece2bc198ea3a00cfdd1172c8937eaea8e8e79e81ecbba2fe793947e31 *payload/Lossless.dll
+c2d4f1078c8c957a27058b60a3d202467bcd6ed29dd2b83aadbaad57463b8d07 *payload/addons/LSP-Windowed/LSP_Windowed.dll
+b9919d0ed18b1fa16570a540211541030fcc4887c88d20a757549297661617a6 *payload/addons/LSP-Windowed/icon.png

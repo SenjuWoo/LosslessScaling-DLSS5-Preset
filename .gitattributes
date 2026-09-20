@@ -1,0 +1,10 @@
+# Batch files must be CRLF in the repository blob itself, not just on checkout: GitHub's
+# "Download ZIP" serves blobs as-is, and cmd.exe is unreliable with LF-only batch files.
+*.bat -text
+
+# Windows INI convention, and ReShade's parser is happiest with CRLF.
+*.ini -text
+
+*.dll binary
+*.addon64 binary
+*.png binary
