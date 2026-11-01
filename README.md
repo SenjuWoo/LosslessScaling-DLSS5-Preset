@@ -14,7 +14,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-8fa3b8?labelColor=0b1016" alt="MIT License"></a>
-  <a href="https://github.com/SenjuWoo/LosslessScaling-DLSS5-Preset/releases/latest"><img src="https://img.shields.io/badge/release-v1.0.0-6b8cae?labelColor=0b1016" alt="v1.0.0"></a>
+  <a href="https://github.com/SenjuWoo/LosslessScaling-DLSS5-Preset/releases/latest"><img src="https://img.shields.io/github/v/release/SenjuWoo/LosslessScaling-DLSS5-Preset?label=release&color=6b8cae" alt="latest release"></a>
   <img src="https://img.shields.io/badge/platform-Windows%2010%2F11-8fa3b8?labelColor=0b1016" alt="Windows 10/11">
   <img src="https://img.shields.io/badge/GPU-RTX%2020%2B-c5d4e0?labelColor=0b1016" alt="RTX 20 or newer">
   <img src="https://img.shields.io/badge/Lossless%20Scaling-3.2.2-6b8cae?labelColor=0b1016" alt="Lossless Scaling 3.2.2">
