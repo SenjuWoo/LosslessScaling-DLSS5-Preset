@@ -93,7 +93,7 @@ function Copy-Payload {
     if (-not (Test-Path -LiteralPath $src)) { Fail "payload missing: $Rel"; return }
 
     $dstDir = Split-Path -Parent $dst
-    if (-not (Test-Path -LiteralPath $dstDir)) { New-Item -ItemType Directory -Path $dstDir -Force | Out-Null }
+    if (-not $DryRun -and -not (Test-Path -LiteralPath $dstDir)) { New-Item -ItemType Directory -Path $dstDir -Force | Out-Null }
 
     $existed = Test-Path -LiteralPath $dst -ErrorAction SilentlyContinue
     $backupRel = $null
@@ -308,8 +308,13 @@ if (-not $DryRun) {
         foreach ($k in $NrKeys[$sec].Keys) { Set-IniKey -Path $iniPath -Section $sec -Key $k -Value $NrKeys[$sec][$k] }
     }
 }
-Ok 'DirectNeuralRendering* written (HookMethod=2, HookPoint=1, RequireDlss=0)'
-Ok 'preset1 written (1 pass, scale 100, style 2)'
+if ($DryRun) {
+    Say 'would write DirectNeuralRendering* (HookMethod=2, HookPoint=1, RequireDlss=0)'
+    Say 'would write preset1 (1 pass, scale 100, style 2)'
+} else {
+    Ok 'DirectNeuralRendering* written (HookMethod=2, HookPoint=1, RequireDlss=0)'
+    Ok 'preset1 written (1 pass, scale 100, style 2)'
+}
 
 if (-not $DryRun) {
     if (-not (Test-Path -LiteralPath $BackupDir)) { New-Item -ItemType Directory -Path $BackupDir -Force | Out-Null }
@@ -337,13 +342,21 @@ if (-not $DryRun) {
 
     $doc = [pscustomobject]@{
         preset    = 'LosslessScaling-DLSS5-Preset'
-        version   = '1.0.0'
+        version   = '1.0.1'
         lsPath    = $lsDir
         installed = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
         files     = $merged
     }
     $doc | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $Manifest -Encoding UTF8
     Say ("manifest: " + $Manifest + " (" + $merged.Count + " entries)")
+}
+
+# A dry run wrote nothing, so verifying the folder would only report the files it skipped as
+# failures and exit 1. Stop here with the plan printed above.
+if ($DryRun) {
+    Write-Host ''
+    Write-Host 'DRY RUN complete - nothing was written. Run INSTALL.bat without -DryRun to install.' -ForegroundColor Green
+    exit 0
 }
 
 $failed = Test-Install -LsDir $lsDir

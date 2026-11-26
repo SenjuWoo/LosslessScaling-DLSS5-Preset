@@ -8,3 +8,6 @@
 *.dll binary
 *.addon64 binary
 *.png binary
+
+# README images: shown on GitHub, left out of the Download ZIP that users install from.
+docs/presentation/ export-ignore

@@ -45,6 +45,20 @@ try {
     $userIni = "[ADDON]`r`nDisabledAddons=`r`n`r`n[OVERLAY]`r`nShowFPS=0`r`n"
     Set-Content -LiteralPath (Join-Path $ls 'ReShade.ini') -Value $userIni -Encoding ASCII
 
+    # -DryRun on a fresh folder must change nothing, claim nothing and exit 0. Snapshot the
+    # whole folder (paths + hashes) so any stray write, file or directory shows up.
+    $snapshot = { Get-ChildItem -LiteralPath $ls -Recurse -Force | ForEach-Object {
+        if ($_.PSIsContainer) { $_.FullName } else { $_.FullName + '|' + (Get-FileHash -LiteralPath $_.FullName).Hash }
+    } | Sort-Object | Out-String }
+    $before = & $snapshot
+    Write-Host 'Running install.ps1 -DryRun...'
+    $rd = Run 'install.ps1' @('-LsPath', $ls, '-SkipRuntime', '-NoLaunch', '-DryRun')
+    Check 'dry run exits 0'                   ($rd.code -eq 0)
+    Check 'dry run left the folder unchanged' ((& $snapshot) -eq $before)
+    Check 'dry run wrote no backup/manifest'  (-not (Test-Path -LiteralPath (Join-Path $tmp 'repo\_backup')))
+    Check 'dry run does not claim writes'     (-not ($rd.out -match '(?m)^\[ ok \] .*written'))
+    if ($rd.code -ne 0) { Write-Host $rd.out }
+
     Write-Host 'Running install.ps1...'
     $r = Run 'install.ps1' @('-LsPath', $ls, '-SkipRuntime', '-NoLaunch')
     Check 'installer exits 0' ($r.code -eq 0)
