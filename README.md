@@ -241,6 +241,9 @@ The installer's own log is `%LOCALAPPDATA%\LosslessScaling-DLSS5-Preset\install.
 re-running never overwrites the stock files it is protecting. `UNINSTALL.bat` walks the manifest it
 wrote and reverses it file by file, then deletes the runtime logs.
 
+The backups and the manifest live in `_backup\` inside the folder you installed from, so run
+`UNINSTALL.bat` from that same folder. Moving to a fresh download? Uninstall from the old folder first.
+
 Want the whole thing gone with no trace? Uninstall, then delete the repo folder.
 
 ![Terminal: tests/test-install.ps1 passes 32 checks: the dry run changes nothing and exits 0, install adds the proxy, ReShade, the add-on and the runtime, keeps the stock DLL and the user's ReShade.ini, re-install keeps the first backup, verify exits 0, and uninstall restores the folder](docs/presentation/screenshot-tests.png)
